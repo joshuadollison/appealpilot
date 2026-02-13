@@ -6,8 +6,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from smallbizpulse.config.key_loader import load_local_keys
-from smallbizpulse.workflow import run_pipeline_once
+from appealpilot.config.key_loader import load_local_keys
+from appealpilot.workflow import run_pipeline_once
 
 
 def _read_text_arg(path: Path | None, inline_text: str | None) -> str:

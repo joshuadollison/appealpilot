@@ -8,9 +8,9 @@ from typing import Any
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
-from smallbizpulse.ingest import parse_denial_text
-from smallbizpulse.models import classify_denial_reason
-from smallbizpulse.workflow import run_pipeline_once
+from appealpilot.ingest import parse_denial_text
+from appealpilot.models import classify_denial_reason
+from appealpilot.workflow import run_pipeline_once
 
 
 class ClassifyRequest(BaseModel):

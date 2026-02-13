@@ -1,4 +1,4 @@
-from smallbizpulse.ingest.denial_parser import parse_denial_text
+from appealpilot.ingest.denial_parser import parse_denial_text
 
 
 def test_parse_denial_text_extracts_core_fields() -> None:

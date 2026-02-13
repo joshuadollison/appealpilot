@@ -21,7 +21,7 @@ def rebuild_retrieval_index(
     """Build or refresh the retrieval collection and return build stats."""
 
     config = build_retrieval_config(
-        settings_path=settings_path or Path("src/smallbizpulse/config/settings.yaml"),
+        settings_path=settings_path or Path("src/appealpilot/config/settings.yaml"),
         overrides=overrides or None,
     )
 

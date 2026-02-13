@@ -6,8 +6,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from smallbizpulse.config.key_loader import load_local_keys
-from smallbizpulse.retrieval import rebuild_retrieval_index
+from appealpilot.config.key_loader import load_local_keys
+from appealpilot.retrieval import rebuild_retrieval_index
 
 DEFAULT_DFS_XLSX = Path(
     "data/raw/dfs_external_appeals/ny_dfs_external_appeals_all_years.xlsx"
@@ -40,7 +40,7 @@ def main() -> None:
         limit=args.limit,
         reset=args.reset,
         settings_path=args.settings_path
-        or Path("src/smallbizpulse/config/settings.yaml"),
+        or Path("src/appealpilot/config/settings.yaml"),
         overrides=overrides,
     )
     print(f"Embedding provider: {result['embedding_provider']}")

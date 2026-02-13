@@ -1,5 +1,5 @@
 project:
-  name: smallbizpulse
+  name: appealpilot
 paths:
   data_raw: data/raw
   data_interim: data/interim

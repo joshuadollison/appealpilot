@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from typing import Iterable
 
-from smallbizpulse.domain import ParsedDenial
+from appealpilot.domain import ParsedDenial
 
 KNOWN_PAYERS = (
     "Aetna",

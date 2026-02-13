@@ -16,7 +16,7 @@ import json
 from pathlib import Path
 from typing import Any
 
-from smallbizpulse.models import ModelCGenerator, build_model_c_config
+from appealpilot.models import ModelCGenerator, build_model_c_config
 
 
 def _read_json(path: Path) -> Any:
@@ -44,7 +44,7 @@ def main() -> None:
         overrides["max_tokens"] = args.max_tokens
 
     config = build_model_c_config(
-        settings_path=args.settings_path or Path("src/smallbizpulse/config/settings.yaml"),
+        settings_path=args.settings_path or Path("src/appealpilot/config/settings.yaml"),
         overrides=overrides or None,
     )
     generator = ModelCGenerator(config=config)

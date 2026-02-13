@@ -7,8 +7,8 @@ import argparse
 import json
 from pathlib import Path
 
-from smallbizpulse.config.key_loader import load_local_keys
-from smallbizpulse.retrieval import ChromaRetriever, build_retrieval_config
+from appealpilot.config.key_loader import load_local_keys
+from appealpilot.retrieval import ChromaRetriever, build_retrieval_config
 
 
 def parse_args() -> argparse.Namespace:
@@ -34,7 +34,7 @@ def main() -> None:
 
     config = build_retrieval_config(
         settings_path=args.settings_path
-        or Path("src/smallbizpulse/config/settings.yaml"),
+        or Path("src/appealpilot/config/settings.yaml"),
         overrides=overrides or None,
     )
     retriever = ChromaRetriever(config=config)

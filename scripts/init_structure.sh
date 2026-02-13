@@ -27,13 +27,13 @@ mkdir -p \
   notebooks/02_eda \
   notebooks/03_modeling \
   notebooks/04_dashboard_prep \
-  src/smallbizpulse/config \
-  src/smallbizpulse/ingest \
-  src/smallbizpulse/preprocess \
-  src/smallbizpulse/features \
-  src/smallbizpulse/models \
-  src/smallbizpulse/viz \
-  src/smallbizpulse/utils \
+  src/appealpilot/config \
+  src/appealpilot/ingest \
+  src/appealpilot/preprocess \
+  src/appealpilot/features \
+  src/appealpilot/models \
+  src/appealpilot/viz \
+  src/appealpilot/utils \
   src/scripts \
   src/tests \
   dashboard/app \
@@ -67,13 +67,13 @@ EOF
 }
 
 # Package init
-touch_if_missing "src/smallbizpulse/__init__.py"
+touch_if_missing "src/appealpilot/__init__.py"
 
 # Config placeholder (only if missing)
-if [[ ! -f "src/smallbizpulse/config/settings.yaml" ]]; then
-  cat > "src/smallbizpulse/config/settings.yaml" <<'EOF'
+if [[ ! -f "src/appealpilot/config/settings.yaml" ]]; then
+  cat > "src/appealpilot/config/settings.yaml" <<'EOF'
 project:
-  name: smallbizpulse
+  name: appealpilot
 paths:
   data_raw: data/raw
   data_interim: data/interim
@@ -120,7 +120,7 @@ touch_if_missing "env/requirements.txt"
 
 if [[ ! -f "env/environment.yml" ]]; then
   cat > "env/environment.yml" <<'EOF'
-name: smallbizpulse
+name: appealpilot
 channels:
   - conda-forge
 dependencies:

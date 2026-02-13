@@ -1,4 +1,4 @@
-from smallbizpulse.models.model_a_classifier import classify_denial_reason
+from appealpilot.models.model_a_classifier import classify_denial_reason
 
 
 def test_classifier_detects_medical_necessity() -> None:

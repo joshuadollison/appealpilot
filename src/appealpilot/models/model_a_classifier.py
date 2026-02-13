@@ -6,7 +6,7 @@ import re
 from dataclasses import dataclass
 from typing import Mapping
 
-from smallbizpulse.domain import DenialClassification
+from appealpilot.domain import DenialClassification
 
 TAXONOMY: Mapping[str, tuple[str, ...]] = {
     "medical_necessity": (

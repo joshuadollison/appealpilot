@@ -7,7 +7,7 @@ import argparse
 
 import uvicorn
 
-from smallbizpulse.config.key_loader import load_local_keys
+from appealpilot.config.key_loader import load_local_keys
 
 
 def main() -> None:
@@ -19,7 +19,7 @@ def main() -> None:
     args = parser.parse_args()
 
     uvicorn.run(
-        "smallbizpulse.api.app:app",
+        "appealpilot.api.app:app",
         host=args.host,
         port=args.port,
         reload=args.reload,

@@ -136,7 +136,7 @@ PYTHONPATH=src python src/scripts/generate_model_c_packet.py \
 ## 7) Config Reference
 
 Primary config file:
-- `src/smallbizpulse/config/settings.yaml`
+- `src/appealpilot/config/settings.yaml`
 
 Key retrieval fields:
 - `retrieval.vector_store`

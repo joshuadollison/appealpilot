@@ -4,7 +4,7 @@ from pathlib import Path
 
 import pytest
 
-from smallbizpulse.retrieval.chroma_retriever import (
+from appealpilot.retrieval.chroma_retriever import (
     ChromaRetriever,
     HashEmbeddingFunction,
     RetrievalConfig,

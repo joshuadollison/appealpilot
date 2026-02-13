@@ -91,8 +91,8 @@ export GROQ_API_KEY="..."  # optional, only needed for groq:* models
 ```
 
 or local-only config file:
-- copy `src/smallbizpulse/config/keys.example.yaml`
-- create `src/smallbizpulse/config/keys.local.yaml`
+- copy `src/appealpilot/config/keys.example.yaml`
+- create `src/appealpilot/config/keys.local.yaml`
 - fill keys there (gitignored by default)
 
 Switch providers by changing model string:

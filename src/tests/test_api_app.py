@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from fastapi.testclient import TestClient
 
-from smallbizpulse.api.app import app
+from appealpilot.api.app import app
 
 
 client = TestClient(app)

@@ -14,9 +14,9 @@ SRC_DIR = ROOT_DIR / "src"
 if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
-from smallbizpulse.config.key_loader import DEFAULT_KEYS_PATH, load_local_keys
-from smallbizpulse.retrieval import rebuild_retrieval_index
-from smallbizpulse.workflow import run_pipeline_once
+from appealpilot.config.key_loader import DEFAULT_KEYS_PATH, load_local_keys
+from appealpilot.retrieval import rebuild_retrieval_index
+from appealpilot.workflow import run_pipeline_once
 
 DEFAULT_DENIAL_PATH = ROOT_DIR / "docs/examples/denial_sample.txt"
 DEFAULT_CHART_NOTES_PATH = ROOT_DIR / "docs/examples/chart_notes_sample.txt"

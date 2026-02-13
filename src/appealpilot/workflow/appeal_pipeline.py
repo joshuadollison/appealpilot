@@ -9,15 +9,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Mapping, Sequence
 
-from smallbizpulse.domain import AppealPacket, EvidenceItem
-from smallbizpulse.ingest import parse_denial_text
-from smallbizpulse.models import (
+from appealpilot.domain import AppealPacket, EvidenceItem
+from appealpilot.ingest import parse_denial_text
+from appealpilot.models import (
     ModelCGenerator,
     TemplateModelCGenerator,
     build_model_c_config,
     classify_denial_reason,
 )
-from smallbizpulse.retrieval import ChromaRetriever, build_retrieval_config
+from appealpilot.retrieval import ChromaRetriever, build_retrieval_config
 
 ATTACHMENT_GUIDANCE: dict[str, tuple[str, ...]] = {
     "medical_necessity": (

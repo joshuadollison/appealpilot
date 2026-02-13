@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
-from smallbizpulse.workflow import run_pipeline_once
+from appealpilot.workflow import run_pipeline_once
 
 
 def test_pipeline_runs_and_exports(tmp_path: Path) -> None:

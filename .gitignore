@@ -215,4 +215,4 @@ data/processed
 data/raw
 
 # Local keys config (never commit secrets)
-src/smallbizpulse/config/keys.local.yaml
+src/appealpilot/config/keys.local.yaml
