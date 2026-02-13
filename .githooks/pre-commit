@@ -1,0 +1,37 @@
+#!/bin/sh
+set -eu
+
+MAX_SIZE_BYTES=26214400
+MAX_SIZE_LABEL="25 MB"
+
+tmp_file="$(mktemp)"
+cleanup() {
+  rm -f "$tmp_file"
+}
+trap cleanup EXIT INT TERM
+
+git diff --cached --name-only -z --diff-filter=ACMR \
+  | tr '\0' '\n' \
+  | while IFS= read -r path; do
+      [ -n "$path" ] || continue
+
+      size_bytes="$(git cat-file -s ":$path" 2>/dev/null || true)"
+      [ -n "$size_bytes" ] || continue
+
+      if [ "$size_bytes" -gt "$MAX_SIZE_BYTES" ]; then
+        size_mb="$(awk "BEGIN { printf \"%.2f\", $size_bytes/1024/1024 }")"
+        printf '%s\t%s\t%s\n' "$size_bytes" "$size_mb" "$path" >> "$tmp_file"
+      fi
+    done
+
+if [ -s "$tmp_file" ]; then
+  echo "ERROR: Commit blocked. One or more staged files exceed ${MAX_SIZE_LABEL}."
+  echo "Offending staged files:"
+  sort -nr "$tmp_file" | while IFS="$(printf '\t')" read -r size_bytes size_mb path; do
+    printf '  - %s (%s MB; %s bytes)\n' "$path" "$size_mb" "$size_bytes"
+  done
+  echo "Use external storage/Git LFS for large artifacts, or keep them out of git."
+  exit 1
+fi
+
+exit 0
