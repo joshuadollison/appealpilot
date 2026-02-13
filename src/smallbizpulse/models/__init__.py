@@ -5,5 +5,14 @@ from .model_c_aisuite import (
     ModelCGenerator,
     build_model_c_config,
 )
+from .model_a_classifier import classify_denial_reason
+from .model_c_template import TemplateModelCGenerator, TemplateGenerationConfig
 
-__all__ = ["ModelCConfig", "ModelCGenerator", "build_model_c_config"]
+__all__ = [
+    "ModelCConfig",
+    "ModelCGenerator",
+    "build_model_c_config",
+    "classify_denial_reason",
+    "TemplateModelCGenerator",
+    "TemplateGenerationConfig",
+]

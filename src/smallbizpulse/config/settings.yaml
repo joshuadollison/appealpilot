@@ -11,6 +11,8 @@ retrieval:
   persist_directory: data/interim/chroma
   collection_name: dfs_appeals_cases
   embedding_model: openai:text-embedding-3-small
+  embedding_provider: openai
+  hash_dimensions: 256
   top_k: 5
 
 model_c:
