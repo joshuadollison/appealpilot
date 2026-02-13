@@ -1,0 +1,77 @@
+[
+  {
+    "source_id": "201905-116848",
+    "distance": 0.6660295724868774,
+    "metadata": {
+      "decision_year": "2019",
+      "coverage_type": "Medicaid",
+      "health_plan": "Healthfirst Inc.",
+      "treatment": "[Inpatient Hospital]",
+      "case_number": "201905-116848",
+      "diagnosis": "[Skin Disorders]",
+      "row_index": 131,
+      "source": "ny_dfs_external_appeals"
+    },
+    "snippet": "case number: 201905-116848\ntreatment: [Inpatient Hospital]\ndiagnosis: [Skin Disorders]\nhealth plan: Healthfirst Inc.\ncoverage type: Medicaid\nappeal decision: Overturned\ndenial reason: Medical necessity\ngender: Female\nage range: 50-59\ndecision year: 2019\nagent: IMEDECS\nsummary 1: This patient with past history of diabetes presented with pain and redness on right buttock. Symptoms began two weeks prior to presentation and were getting progressively worse. CT showed calcified lesion consistent with cellulitis/edema. The patient was started on IV antibiotics and seen by infectious disease specialist. The health plan's determination is overturned in whole. The inpatient admission was medically necessary and appropriate in this case. The patient met criteria for sepsis upon presentation, and had source of infection. This is potentially life-threatening and an acute level of care was medically necessary.\nreferences 1: 1) Cellulitis. A. Damian Dhar, MD, JD. August 2017, Merck Manual Professional Version."
+  },
+  {
+    "source_id": "201907-119321",
+    "distance": 0.7290000915527344,
+    "metadata": {
+      "source": "ny_dfs_external_appeals",
+      "decision_year": "2019",
+      "case_number": "201907-119321",
+      "health_plan": "HIP Health Plan of New York",
+      "coverage_type": "HMO",
+      "treatment": "[Anesthesia]",
+      "row_index": 300,
+      "diagnosis": "[Dental Problems]"
+    },
+    "snippet": "case number: 201907-119321\ntreatment: [Anesthesia]\ndiagnosis: [Dental Problems]\nhealth plan: HIP Health Plan of New York\ncoverage type: HMO\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Female\nage range: 0-9\ndecision year: 2019\nagent: IPRO\nsummary 1: Diagnosis: Dental Problems requiring- Extraction of Tooth C, H, and G (Maxillary Right and Left Primary Canines and the Maxillary Left Lateral Incisor). Treatment: D9222 (General Anesthetic - first 15 minutes) and D9223 (General Anesthesia - each 15 minutes) The insurer denied the D9222 (General Anesthetic - first 15 minutes) and D9223 (General Anesthesia - each 15 minutes). The denial was upheld. This case involves a young male who was to undergo tooth extractions. The patient was seen by his dentist and was to undergo extraction of tooth C, H, and G (maxillary right and left primary canines and the maxillary left lateral incisor). It was noted that the patient was very nervous and apprehensive. It was reported that this was his first surgical procedure; which involved multiple extractions. Any anxiety experienced during these procedures may result in emotional traumas for future dental treatments needed. Per the American Association of Oral and Maxillofacial Surgeons, anxiety, fear, and pain are the main concerns in providing dental treatment and must be controlled satisfactorily during the perioperative period to permit safe and effective completion of the surgical procedure. Indications for general anesthesia during a dental procedure are the \"need to depress the patient's level of consciousness, anxiety,"
+  },
+  {
+    "source_id": "201907-119091",
+    "distance": 0.7295976877212524,
+    "metadata": {
+      "treatment": "[Inpatient Hospital]",
+      "diagnosis": "[Cardiac/ Circulatory Problems]",
+      "source": "ny_dfs_external_appeals",
+      "coverage_type": "Medicaid",
+      "row_index": 377,
+      "decision_year": "2019",
+      "case_number": "201907-119091",
+      "health_plan": "Empire BlueCross BlueShield HealthPlus"
+    },
+    "snippet": "case number: 201907-119091\ntreatment: [Inpatient Hospital]\ndiagnosis: [Cardiac/ Circulatory Problems]\nhealth plan: Empire BlueCross BlueShield HealthPlus\ncoverage type: Medicaid\nappeal decision: Overturned\ndenial reason: Medical necessity\ngender: Female\nage range: 10-19\ndecision year: 2019\nagent: MCMC, LLC\nsummary 1: Diagnosis: Fever, vomiting Issue under review: Inpatient admission Determination: The Inpatient admission was medically necessary. Myocarditis is an inflammatory disease of heart muscle. There are numerous causes, including infection, autoimmune disease, hypersensitivity reactions, and toxins. In developed countries, the cause is usually viral. Enteroviruses are the classic viral pathogen, but other viral agents may cause myocarditis, including adenovirus, parvovirus, Epstein-Barr virus, and cytomegalovirus. Characteristic symptoms on presentation include tachypnea, abdominal pain, vomiting, chest pain, palpitations, and tachycardia. Most patients present with resting tachycardia. Electocardiographic findings include ST-T wave abnormalities and premature contractions. Inflammatory markers are typically elevated. Troponin is a particularly useful marker to trend the disease. The most common echocardiographic finding is dilated cardiomyopathy with left ventricular dilation and reduced ejection fraction, but other phenotypes may be present. Cardiac MRI is particularly useful, because it can be used to assess left ventricular ejection, chamber size, wall thickness, and local areas of edema and fibrosis. Specific MRI diagnostic criteria are available for suspected m"
+  },
+  {
+    "source_id": "201907-119212",
+    "distance": 0.7297415733337402,
+    "metadata": {
+      "row_index": 340,
+      "decision_year": "2019",
+      "coverage_type": "Medicaid",
+      "case_number": "201907-119212",
+      "treatment": "[Infusion Therapy]",
+      "health_plan": "Fidelis Care New York",
+      "source": "ny_dfs_external_appeals",
+      "diagnosis": "[Infectious Disease]"
+    },
+    "snippet": "case number: 201907-119212\ntreatment: [Infusion Therapy]\ndiagnosis: [Infectious Disease]\nhealth plan: Fidelis Care New York\ncoverage type: Medicaid\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Male\nage range: 10-19\ndecision year: 2019\nagent: IPRO\nsummary 1: Diagnosis: Viral Croup Treatment: Gammagard The insurer denied the Gammagard. The denial was upheld. This patient is a young male with a history of autoimmune encephalitis. The patient had a prior viral infection presenting as croup. During that admission, he had mental status changes and weakness which was initially considered to be an encephalopathy or encephalitis. His mental status returned to normal by the time of discharge, but he developed pronounced behavioral and personality changes and had no neurologic deficits. His Magnetic Resonance Imaging (MRI) at that time could have suggested a demyelinating disorder. Over the ensuing months he continued to have episodes of mood changes, and emotional lability. Based on the patient records there is no clinical evidence of an organic disease process, inflammatory damage to the nervous system, or demyelination. Several months after discharge it was noticed that he was \"positive\" for anti-MOG antibodies (no titer is mentioned) and it was concluded that he had originally experienced, in retrospect, autoimmune encephalitis. The presence of anti-MOG does not confirm encephalitis. Detection of serum anti-MOG antibodies is associated with some patients with the demyelinating syndromes (acute disseminated encephalomyelitis (ADEM), multiphasic disseminated ence"
+  },
+  {
+    "source_id": "201907-119246",
+    "distance": 0.7331893444061279,
+    "metadata": {
+      "diagnosis": "[Gynecological]",
+      "source": "ny_dfs_external_appeals",
+      "coverage_type": "PPO",
+      "decision_year": "2019",
+      "row_index": 483,
+      "health_plan": "Oxford",
+      "case_number": "201907-119246",
+      "treatment": "[Infertility Treatment]"
+    },
+    "snippet": "case number: 201907-119246\ntreatment: [Infertility Treatment]\ndiagnosis: [Gynecological]\nhealth plan: Oxford\ncoverage type: PPO\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Female\nage range: 40-49\ndecision year: 2019\nagent: MCMC, LLC\nsummary 1: Diagnosis: Issue conceiving Treatment: IUI The proposed treatment with IUI was not medically necessary. According to the American Society for Reproductive Medicine (ASRM), infertility is a disease, defined by the failure to achieve a successful pregnancy after 12 months or more of appropriate, timed unprotected intercourse or therapeutic donor insemination. Earlier evaluation and treatment may be justified based on medical history and physical findings and is warranted after six months for women over age 35 years. This patient was able to conceive following donor insemination but had a miscarriage. In other words, she did not fail to conceive after six therapeutic donor inseminations, and, therefore, she does not have a diagnosis of infertility. In the absence of such a diagnosis, treatment for infertility including the intrauterine insemination performed is not medically necessary. The request is not medically necessary, since this patient did not have an illness, injury or disease: She has inability to conceive due to non-exposure to sperm and due to aging a normal, natural physiological process. The standard of care is for this patient to fail six inseminations (i.e. fail to get pregnant) before she is considered infertile and eligible for coverage of infertility services. In summary, this patient's inability t"
+  }
+]

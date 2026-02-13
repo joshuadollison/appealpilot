@@ -209,4 +209,10 @@ __marimo__/
 .specstory/
 
 # Project data (local only)
-data/
+data/external
+data/interim
+data/processed
+data/raw
+
+# Local keys config (never commit secrets)
+src/smallbizpulse/config/keys.local.yaml

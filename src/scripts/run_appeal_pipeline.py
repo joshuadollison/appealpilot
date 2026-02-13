@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from smallbizpulse.config.key_loader import load_local_keys
 from smallbizpulse.workflow import run_pipeline_once
 
 
@@ -18,6 +19,7 @@ def _read_text_arg(path: Path | None, inline_text: str | None) -> str:
 
 
 def main() -> None:
+    load_local_keys()
     parser = argparse.ArgumentParser()
     parser.add_argument("--denial-text")
     parser.add_argument("--denial-text-file", type=Path)

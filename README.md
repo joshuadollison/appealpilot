@@ -65,6 +65,22 @@ PYTHONPATH=src python src/scripts/run_api.py --host 127.0.0.1 --port 8000
 Then open:
 - `http://127.0.0.1:8000/docs`
 
+## Dashboard (Real-Time UI)
+
+Start dashboard:
+
+```bash
+PYTHONPATH=src python src/scripts/run_dashboard.py --host 127.0.0.1 --port 8501
+```
+
+Then open:
+- `http://127.0.0.1:8501`
+
+Dashboard features:
+- Rebuild vector store (button) with provider/limit/reset controls.
+- Run full denial-to-appeal workflow interactively.
+- Inspect classification, retrieved evidence, generated output, and exported file paths.
+
 ## LLM Generation (Model C via aisuite)
 
 Set provider API key(s):
@@ -73,6 +89,11 @@ Set provider API key(s):
 export OPENAI_API_KEY="..."
 export GROQ_API_KEY="..."  # optional, only needed for groq:* models
 ```
+
+or local-only config file:
+- copy `src/smallbizpulse/config/keys.example.yaml`
+- create `src/smallbizpulse/config/keys.local.yaml`
+- fill keys there (gitignored by default)
 
 Switch providers by changing model string:
 

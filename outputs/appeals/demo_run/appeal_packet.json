@@ -1,0 +1,55 @@
+{
+  "provider": "template",
+  "model": "template:appealpacket-v1",
+  "usage": {},
+  "output": {
+    "cover_letter": "Re: Appeal of denial (medical_necessity) for UnitedHealthcare. Requested service codes: 72148.",
+    "detailed_justification": "This appeal is submitted with supporting clinical documentation and prior comparable determinations. The denial should be overturned based on the enclosed facts and references.",
+    "evidence_checklist": [
+      {
+        "item": "Provider progress note",
+        "status": "missing",
+        "notes": "Confirm and attach."
+      },
+      {
+        "item": "Prior failed conservative therapy documentation",
+        "status": "missing",
+        "notes": "Confirm and attach."
+      },
+      {
+        "item": "Relevant imaging or diagnostic report",
+        "status": "missing",
+        "notes": "Confirm and attach."
+      }
+    ],
+    "missing_information": [],
+    "citations": [
+      {
+        "claim": "Comparable precedent supports reconsideration (reference 1).",
+        "source_id": "201905-116848",
+        "source_excerpt": "case number: 201905-116848\ntreatment: [Inpatient Hospital]\ndiagnosis: [Skin Disorders]\nhealth plan: Healthfirst Inc.\ncoverage type: Medicaid\nappeal decision: Overturned\ndenial reason: Medical necessity\ngender: Female\nage range: 50-59\ndecision year: 2019\nagent: IMEDECS\nsummary 1: This patient with past history of diabetes presented with pain and redness on right buttock. Symptoms began two weeks prior to presentation and were getting progressively worse. CT showed calcified lesion consistent with"
+      },
+      {
+        "claim": "Comparable precedent supports reconsideration (reference 2).",
+        "source_id": "201907-119321",
+        "source_excerpt": "case number: 201907-119321\ntreatment: [Anesthesia]\ndiagnosis: [Dental Problems]\nhealth plan: HIP Health Plan of New York\ncoverage type: HMO\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Female\nage range: 0-9\ndecision year: 2019\nagent: IPRO\nsummary 1: Diagnosis: Dental Problems requiring- Extraction of Tooth C, H, and G (Maxillary Right and Left Primary Canines and the Maxillary Left Lateral Incisor). Treatment: D9222 (General Anesthetic - first 15 minutes) and D9223 (General A"
+      },
+      {
+        "claim": "Comparable precedent supports reconsideration (reference 3).",
+        "source_id": "201907-119091",
+        "source_excerpt": "case number: 201907-119091\ntreatment: [Inpatient Hospital]\ndiagnosis: [Cardiac/ Circulatory Problems]\nhealth plan: Empire BlueCross BlueShield HealthPlus\ncoverage type: Medicaid\nappeal decision: Overturned\ndenial reason: Medical necessity\ngender: Female\nage range: 10-19\ndecision year: 2019\nagent: MCMC, LLC\nsummary 1: Diagnosis: Fever, vomiting Issue under review: Inpatient admission Determination: The Inpatient admission was medically necessary. Myocarditis is an inflammatory disease of heart mu"
+      },
+      {
+        "claim": "Comparable precedent supports reconsideration (reference 4).",
+        "source_id": "201907-119212",
+        "source_excerpt": "case number: 201907-119212\ntreatment: [Infusion Therapy]\ndiagnosis: [Infectious Disease]\nhealth plan: Fidelis Care New York\ncoverage type: Medicaid\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Male\nage range: 10-19\ndecision year: 2019\nagent: IPRO\nsummary 1: Diagnosis: Viral Croup Treatment: Gammagard The insurer denied the Gammagard. The denial was upheld. This patient is a young male with a history of autoimmune encephalitis. The patient had a prior viral infection presentin"
+      },
+      {
+        "claim": "Comparable precedent supports reconsideration (reference 5).",
+        "source_id": "201907-119246",
+        "source_excerpt": "case number: 201907-119246\ntreatment: [Infertility Treatment]\ndiagnosis: [Gynecological]\nhealth plan: Oxford\ncoverage type: PPO\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Female\nage range: 40-49\ndecision year: 2019\nagent: MCMC, LLC\nsummary 1: Diagnosis: Issue conceiving Treatment: IUI The proposed treatment with IUI was not medically necessary. According to the American Society for Reproductive Medicine (ASRM), infertility is a disease, defined by the failure to achieve a s"
+      }
+    ]
+  },
+  "raw_text": ""
+}

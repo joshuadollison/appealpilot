@@ -7,8 +7,11 @@ import argparse
 
 import uvicorn
 
+from smallbizpulse.config.key_loader import load_local_keys
+
 
 def main() -> None:
+    load_local_keys()
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=8000)

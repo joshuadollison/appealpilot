@@ -9,6 +9,7 @@ from .chroma_retriever import (
     resolve_embedding_provider,
 )
 from .dfs_ingest import load_dfs_documents
+from .index_builder import rebuild_retrieval_index
 
 __all__ = [
     "RetrievalConfig",
@@ -18,4 +19,5 @@ __all__ = [
     "build_retrieval_config",
     "resolve_embedding_provider",
     "load_dfs_documents",
+    "rebuild_retrieval_index",
 ]

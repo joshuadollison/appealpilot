@@ -6,11 +6,8 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
-from smallbizpulse.retrieval import (
-    ChromaRetriever,
-    build_retrieval_config,
-    load_dfs_documents,
-)
+from smallbizpulse.config.key_loader import load_local_keys
+from smallbizpulse.retrieval import rebuild_retrieval_index
 
 DEFAULT_DFS_XLSX = Path(
     "data/raw/dfs_external_appeals/ny_dfs_external_appeals_all_years.xlsx"
@@ -30,6 +27,7 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> None:
     args = parse_args()
+    load_local_keys()
 
     overrides = {}
     if args.embedding_provider:
@@ -37,34 +35,18 @@ def main() -> None:
     if args.collection_name:
         overrides["collection_name"] = args.collection_name
 
-    config = build_retrieval_config(
+    result = rebuild_retrieval_index(
+        xlsx_path=args.xlsx_path,
+        limit=args.limit,
+        reset=args.reset,
         settings_path=args.settings_path
         or Path("src/smallbizpulse/config/settings.yaml"),
-        overrides=overrides or None,
+        overrides=overrides,
     )
-
-    if args.reset:
-        try:
-            import chromadb
-        except ImportError:
-            chromadb = None
-
-        if chromadb is not None:
-            client = chromadb.PersistentClient(path=config.persist_directory)
-            try:
-                client.delete_collection(config.collection_name)
-            except Exception:
-                pass
-
-    retriever = ChromaRetriever(config=config)
-
-    documents = load_dfs_documents(xlsx_path=args.xlsx_path, limit=args.limit)
-    inserted = retriever.upsert_documents(documents)
-
-    print(f"Embedding provider: {retriever.embedding_provider}")
-    print(f"Collection: {config.collection_name}")
-    print(f"Documents upserted: {inserted}")
-    print(f"Collection size: {retriever.count()}")
+    print(f"Embedding provider: {result['embedding_provider']}")
+    print(f"Collection: {result['collection_name']}")
+    print(f"Documents upserted: {result['documents_upserted']}")
+    print(f"Collection size: {result['collection_size']}")
 
 
 if __name__ == "__main__":
