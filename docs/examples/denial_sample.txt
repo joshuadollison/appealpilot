@@ -1,0 +1,13 @@
+Payer: UnitedHealthcare
+Member ID: 123456789
+Claim #: 100200300
+DOS: 2026-01-22
+
+Denial Reason: Not medically necessary due to insufficient clinical documentation supporting advanced imaging.
+
+Requested Service:
+- CPT 72148 (MRI Lumbar Spine without contrast)
+
+Appeal Instructions:
+- Submit first-level appeal within 60 days of this notice.
+- Include prior conservative treatment history, exam findings, and supporting chart documentation.

@@ -1,0 +1,14 @@
+{
+  "payer": "UnitedHealthcare",
+  "cpt_hcpcs_codes": [
+    "72148"
+  ],
+  "denial_reason_text": "Not medically necessary due to insufficient clinical documentation supporting advanced imaging.",
+  "denial_category": "medical_necessity",
+  "classification_confidence": 0.55,
+  "deadline_hints": [
+    "within 60 days"
+  ],
+  "chart_notes_excerpt": "Patient has chronic low back pain with radicular symptoms for 14 weeks.\nCompleted six weeks of supervised physical therapy with no meaningful improvement.\nTrialed NSAIDs and neuropathic pain medication with persistent functional limitation.\nNeurologic exam notes reduced sensation in L5 distribution and positive straight-leg raise.\nProvider recommends lumbar MRI to evaluate persistent symptoms and treatment planning.\n",
+  "generated_at_utc": "2026-02-14T00:45:22.547404+00:00"
+}

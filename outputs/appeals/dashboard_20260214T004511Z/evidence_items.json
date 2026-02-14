@@ -1,0 +1,77 @@
+[
+  {
+    "source_id": "201907-119685",
+    "distance": 0.2151418924331665,
+    "metadata": {
+      "source": "ny_dfs_external_appeals",
+      "coverage_type": "HMO",
+      "case_number": "201907-119685",
+      "diagnosis": "[Orthopedic/ Musculoskeletal]",
+      "treatment": "[Advanced Imaging Services (Including PET, MRI, CT)]",
+      "health_plan": "HIP Health Plan of New York",
+      "decision_year": "2019",
+      "row_index": 1176
+    },
+    "snippet": "case number: 201907-119685\ntreatment: [Advanced Imaging Services (Including PET, MRI, CT)]\ndiagnosis: [Orthopedic/ Musculoskeletal]\nhealth plan: HIP Health Plan of New York\ncoverage type: HMO\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Female\nage range: 0-9\ndecision year: 2019\nagent: MCMC, LLC\nsummary 1: Diagnosis: Back and/or neck pain Treatment: Magnetic resonance image (MRI) of the lower back with and without contrast The requested MRI of the lower back with and without contrast is not medically necessary. The patient presented with acute radicular pain, without significant neurological findings on examination to warrant acute neuro-imaging. Specifically, there is no weakness, no bowel or bladder dysfunction and no \"red flag\" historical diagnoses, signs or symptoms to warrant imaging. The standard of care in this clinical context would be six to eight weeks of conservative management followed by re-evaluation.\nreferences 1: 1) Chou R, Deyo R, Friedly J, et al. Nonpharmacologic Therapies for Low Back Pain: A Systematic Review for an American College of Physicians Clinical Practice Guideline. Ann Intern Med 2017; 166:493. 2) Baron R, Binder A, Attal N, Casale R, Dickenson AH, Treede RD. Neuropathic low back pain in clinical practice. Eur J Pain. 2016 Jul;20(6):861-73. 3) Jarvik JG, Gold LS, Comstock BA, et al. Association of early imaging for back pain with clinical outcomes in older adults. JAMA 2015; 313:1143."
+  },
+  {
+    "source_id": "201904-116543",
+    "distance": 0.35938334465026855,
+    "metadata": {
+      "treatment": "[Physical Therapy]",
+      "decision_year": "2019",
+      "coverage_type": "EPO",
+      "case_number": "201904-116543",
+      "row_index": 597,
+      "source": "ny_dfs_external_appeals",
+      "health_plan": "Oxford",
+      "diagnosis": "[Orthopedic/ Musculoskeletal]"
+    },
+    "snippet": "case number: 201904-116543\ntreatment: [Physical Therapy]\ndiagnosis: [Orthopedic/ Musculoskeletal]\nhealth plan: Oxford\ncoverage type: EPO\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Female\nage range: 20-29\ndecision year: 2019\nagent: IMEDECS\nsummary 1: This is a female patient who was receiving ongoing physical therapy/manual therapy for the treatment of lumbar intervertebral disc displacement. These visits represent visits #7 through #13 for the same condition. According to a physical therapy note, the patient reported her back was much better after the recent injection and the patient was no longer feeling any pain down the leg. A physical exam was not performed. It was noted there was no radicular pain throughout the session. The patient was recommended for continued therapy. Additional therapy was completed to include manual therapy. The issue under review is the medical necessity of manual therapy times seven (x7). The health plan's determination of medical necessity is upheld. The patient presented reporting no pain down the leg and reported feeling much better after the recent injection. There were no specific objective deficits on examination on that visit and the patient had already received education and instruction on an independent home exercise program. The patient could have continued to progress independently to manage symptoms and improve overall strength and range of motion.\nreferences 1: 1) The Official Disability Guidelines (ODG) Online Version, Pain Chapter, Massage Therapy 2) Man Ther. 2014 Mar 18. pii: S1356-689X(14)00038-1. doi: 10."
+  },
+  {
+    "source_id": "201905-116979",
+    "distance": 0.36408984661102295,
+    "metadata": {
+      "decision_year": "2019",
+      "health_plan": "Empire BlueCross BlueShield HealthPlus",
+      "row_index": 1460,
+      "case_number": "201905-116979",
+      "treatment": "[Inpatient Hospital]",
+      "source": "ny_dfs_external_appeals",
+      "diagnosis": "[Orthopedic/ Musculoskeletal]",
+      "coverage_type": "Medicaid"
+    },
+    "snippet": "case number: 201905-116979\ntreatment: [Inpatient Hospital]\ndiagnosis: [Orthopedic/ Musculoskeletal]\nhealth plan: Empire BlueCross BlueShield HealthPlus\ncoverage type: Medicaid\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Female\nage range: 50-59\ndecision year: 2019\nagent: IPRO\nsummary 1: Diagnosis: Low back pain, past medical history of hyperlipidemia and hypertension Treatment: Inpatient admission, diagnostic testing and medication management The insurer denied the inpatient admission. The denial was upheld This patient was seen in the emergency room for bilateral lower extremity pain/weakness associated with low back pain x8 days. The patient reported she had been seeing a physician who was treating her with steroids and a muscle relaxer. She had a lumbar epidural steroid injection (LESI) two weeks prior. The patient reported not being able to walk for the previous 24 hours. The MRI revealed moderate central canal stenosis with bilateral foraminal stenosis at L4-5, due to herniation, bulge, and facet arthropathy. Upon examination the patient had full range of motion, equal pulses and upper and lower extremities, decreased right leg extremity range of motion. The was admitted for pain control and IV Decadron. The patient had no focal deficits or neurologic compromise. The patient was requesting surgery in the inpatient setting as she felt she was unable to function with her current level of pain and radiculopathy. The patient had a L4-5 right hemilaminectomy and microdiscectomy. There was post-operative resolution of right leg pain. The guidelines state "
+  },
+  {
+    "source_id": "201907-119690",
+    "distance": 0.3675643801689148,
+    "metadata": {
+      "treatment": "[Chiropractic Services]",
+      "coverage_type": "PPO",
+      "diagnosis": "[Central Nervous System/ Neuromuscular Disorder]",
+      "decision_year": "2019",
+      "health_plan": "Oxford",
+      "row_index": 1174,
+      "case_number": "201907-119690",
+      "source": "ny_dfs_external_appeals"
+    },
+    "snippet": "case number: 201907-119690\ntreatment: [Chiropractic Services]\ndiagnosis: [Central Nervous System/ Neuromuscular Disorder]\nhealth plan: Oxford\ncoverage type: PPO\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Female\nage range: 30-39\ndecision year: 2019\nagent: IPRO\nsummary 1: Diagnosis: Cervical and cervicothoracic radiculopathy Treatment: Chiropractic treatment The insurer denied continued chiropractic treatment after 1 month of treatment. The denial was upheld. The patient is a female with neck pain and radiculopathy. She initially presented for chiropractic treatment of the neck and mid-back pain and left arm intermittent tingling at the beginning of this year. Her diagnoses included cervical and cervicothoracic region radiculopathy. She received chiropractic treatment for several months, including manipulation, ultrasound and traction. After 1 month of treatment the patient's reported pain levels did not demonstrate further clinically significant improvement. The treatment and progress had become stagnant and did not produce any further improvements. For cervical radiculopathy, the Official Disability Guidelines (ODG) recommend up to 18 visits if objective improvement is shown. Since progress had not been reported after month #1 of treatment, further treatment was not medically necessary. Progress reports show minimal improvements past the first month of treatment. The treatment rendered appeared redundant and repetitive without gains in subjective and objective findings. The records do not provide functional improvements past the first month of treatmen"
+  },
+  {
+    "source_id": "201908-119895",
+    "distance": 0.3742944002151489,
+    "metadata": {
+      "treatment": "[Inpatient Hospital]",
+      "decision_year": "2019",
+      "health_plan": "Healthfirst Inc.",
+      "case_number": "201908-119895",
+      "source": "ny_dfs_external_appeals",
+      "row_index": 1249,
+      "coverage_type": "Medicaid",
+      "diagnosis": "[Orthopedic/ Musculoskeletal]"
+    },
+    "snippet": "case number: 201908-119895\ntreatment: [Inpatient Hospital]\ndiagnosis: [Orthopedic/ Musculoskeletal]\nhealth plan: Healthfirst Inc.\ncoverage type: Medicaid\nappeal decision: Upheld\ndenial reason: Medical necessity\ngender: Male\nage range: 20-29\ndecision year: 2019\nagent: IPRO\nsummary 1: Diagnosis: Lower Back Pain Treatment: Inpatient Hospital The insurer denied the Inpatient Hospital. The denial was upheld. This case involves a young male patient who presented to the Emergency Department in mid-2019 complaining of low back pain, and associated right lower extremity numbness for 5 days after bending over. The patient reported that he did not have alleviation of pain with the use of ibuprofen. He does have a history of cerebral palsy, and a herniated lumbar discs. The physical exam noted that there were intact reflexes bilaterally, however, the patient refused to move his legs due to pain during the examination. The patient stated he was unable to walk due to pain. It was noted that that the patient did have decreased sensation to the lateral side of the left lower extremity; however, this was residual from a previous disc herniation. He had a magnetic resonance imaging which showed no sign of cord compression. The patient was admitted for pain management. The patient was recommended to receive ketorolac, Tylenol, diazepam, a lidocaine patch, and Flexeril for muscle spasm. He was evaluated by physical therapy. The patient documentation indicated there was slight improvement in his pain and he was able to ambulate with a walker. He was discharged when deemed stable with instructio"
+  }
+]

@@ -1,0 +1,38 @@
+project:
+  name: appealpilot
+paths:
+  data_raw: data/raw
+  data_interim: data/interim
+  data_processed: data/processed
+  outputs: outputs
+
+retrieval:
+  vector_store: chroma
+  persist_directory: data/interim/chroma
+  collection_name: dfs_appeals_cases
+  embedding_provider: sbert
+  embedding_model: sbert:sentence-transformers/all-MiniLM-L6-v2
+  # Other embedding options:
+  # - Insurance BERT demo option (local, domain-tuned):
+  #   embedding_provider: insurance_bert
+  #   embedding_model: insurance_bert:llmware/industry-bert-insurance-v0.1
+  # - OpenAI (cloud):
+  #   embedding_provider: openai
+  #   embedding_model: openai:text-embedding-3-small
+  # - Hash baseline (fully local lexical baseline):
+  #   embedding_provider: hash
+  #   embedding_model: hash
+  hash_dimensions: 256
+  upsert_batch_size: 128
+  openai_max_batch_tokens: 200000
+  openai_max_input_tokens: 8000
+  top_k: 5
+
+model_c:
+  runtime: aisuite
+  model: openai:gpt-5-mini
+  temperature: 0.2
+  max_tokens: 1600
+  top_p: 1.0
+  # Example Groq swap:
+  # model: groq:llama-3.3-70b-versatile

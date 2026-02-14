@@ -1,0 +1,84 @@
+{
+  "provider": "openai",
+  "model": "openai:gpt-5-mini",
+  "usage": {
+    "prompt_tokens": 2724,
+    "completion_tokens": 1624,
+    "total_tokens": 4348
+  },
+  "output": {
+    "cover_letter": "To: UnitedHealthcare Appeals Department\nRe: Appeal of denial for CPT 72148 \u2014 Lumbar spine MRI (with/without contrast)\nPatient: (per chart)\nDate of Service: (per chart)\nPolicy/Claim#: (per insurer)\n\nDear Appeals Reviewer,\n\nWe respectfully request reversal of the denial for lumbar MRI (CPT 72148). The treating provider ordered advanced imaging due to persistent radicular low back pain for 14 weeks, failure of an adequate course of conservative therapy (including six weeks of supervised physical therapy and trials of NSAIDs and neuropathic pain medication), ongoing functional limitation, and objective neurologic findings (reduced sensation in the L5 distribution and positive straight-leg raise). The MRI is medically necessary to evaluate the cause of persistent radicular symptoms and to guide timely treatment decisions. Please see the attached detailed justification and supporting documentation. We request expedited reconsideration given the clinical need to determine appropriate next steps in management.\n\nSincerely,\n[ProviderName]\n[Facility]\n",
+    "detailed_justification": "Summary of clinical presentation and reason for imaging request:\n- Persistent low back pain with radicular features for 14 weeks despite conservative management (completed six weeks of supervised physical therapy and medication trials), resulting in ongoing functional limitation and need for further diagnostic evaluation. (See citations: case file chart notes excerpt; NY external appeal precedent citing 6\u20138 weeks conservative management). \n\nObjective findings supporting need for MRI:\n- Neurologic exam documents reduced sensation in the L5 distribution and a positive straight-leg raise, consistent with radicular pathology that warrants advanced imaging after failed conservative care to evaluate for disc herniation, foraminal stenosis, or other structural causes. (See citation: case file chart notes excerpt). \n\nClinical rationale linking findings to medical necessity:\n- Current clinical course: ongoing radicular symptoms for >12 weeks with objective sensory deficit and positive provocative testing, combined with failure of an appropriate trial of conservative therapy, meets accepted criteria for lumbar MRI to identify surgically or procedurally targetable pathology and to inform treatment planning. The insurer\u2019s stated reason for denial \u2014 insufficient documentation supporting advanced imaging \u2014 is addressed by the treating provider\u2019s progress notes documenting symptom duration, failed conservative therapy, ongoing functional limitation, and focal neurological findings. (See citations: case file chart notes excerpt; NY external appeal precedent noting standard of 6\u20138 weeks conservative therapy). \n\nRequested action:\n- Reverse the medical necessity denial and authorize the lumbar MRI (CPT 72148) to allow definitive evaluation and timely management of the patient\u2019s persistent radicular low back pain. \n\nAttachments provided/needed (see checklist).",
+    "evidence_checklist": [
+      {
+        "item": "Provider progress note",
+        "status": "present",
+        "notes": "Chart notes excerpt documents 14 weeks of symptoms, neurologic findings, and provider recommendation for MRI."
+      },
+      {
+        "item": "Prior failed conservative therapy documentation",
+        "status": "present",
+        "notes": "Chart notes indicate completion of six weeks of supervised physical therapy and trials of NSAIDs and neuropathic pain medication without meaningful improvement."
+      },
+      {
+        "item": "Relevant imaging or diagnostic report",
+        "status": "missing",
+        "notes": "No prior lumbar imaging report (e.g., X-ray or CT/MRI) was provided in the materials supplied."
+      },
+      {
+        "item": "Detailed neurologic exam documentation",
+        "status": "present",
+        "notes": "Chart notes include reduced sensation in L5 distribution and positive straight-leg raise; full detailed exam note not attached."
+      },
+      {
+        "item": "Dates of therapy and medication trials",
+        "status": "missing",
+        "notes": "Chart excerpt references six weeks of PT and medication trials but does not include exact start/end dates or therapy visit records."
+      }
+    ],
+    "missing_information": [
+      "Prior lumbar imaging reports (if any) \u2014 absent from provided materials",
+      "Exact dates and documentation of the six weeks of supervised physical therapy (therapy visit notes or dates)",
+      "Specific start/end dates and dosages for NSAID and neuropathic pain medication trials",
+      "Full signed provider progress note(s) including provider name and signature/date"
+    ],
+    "citations": [
+      {
+        "claim": "Patient has chronic low back pain with radicular symptoms for 14 weeks.",
+        "source_id": "case_file",
+        "source_excerpt": "Patient has chronic low back pain with radicular symptoms for 14 weeks."
+      },
+      {
+        "claim": "Completed six weeks of supervised physical therapy with no meaningful improvement.",
+        "source_id": "case_file",
+        "source_excerpt": "Completed six weeks of supervised physical therapy with no meaningful improvement."
+      },
+      {
+        "claim": "Trialed NSAIDs and neuropathic pain medication with persistent functional limitation.",
+        "source_id": "case_file",
+        "source_excerpt": "Trialed NSAIDs and neuropathic pain medication with persistent functional limitation."
+      },
+      {
+        "claim": "Neurologic exam notes reduced sensation in L5 distribution and positive straight-leg raise.",
+        "source_id": "case_file",
+        "source_excerpt": "Neurologic exam notes reduced sensation in L5 distribution and positive straight-leg raise."
+      },
+      {
+        "claim": "Provider recommends lumbar MRI to evaluate persistent symptoms and treatment planning.",
+        "source_id": "case_file",
+        "source_excerpt": "Provider recommends lumbar MRI to evaluate persistent symptoms and treatment planning."
+      },
+      {
+        "claim": "Established external appeal precedent notes standard of six to eight weeks of conservative management before imaging in similar contexts.",
+        "source_id": "201907-119685",
+        "source_excerpt": "The standard of care in this clinical context would be six to eight weeks of conservative management followed by re-evaluation."
+      },
+      {
+        "claim": "Denial reason: Not medically necessary due to insufficient clinical documentation supporting advanced imaging.",
+        "source_id": "case_file",
+        "source_excerpt": "Not medically necessary due to insufficient clinical documentation supporting advanced imaging."
+      }
+    ]
+  },
+  "raw_text": "{\n  \"cover_letter\": \"To: UnitedHealthcare Appeals Department\\nRe: Appeal of denial for CPT 72148 \u2014 Lumbar spine MRI (with/without contrast)\\nPatient: (per chart)\\nDate of Service: (per chart)\\nPolicy/Claim#: (per insurer)\\n\\nDear Appeals Reviewer,\\n\\nWe respectfully request reversal of the denial for lumbar MRI (CPT 72148). The treating provider ordered advanced imaging due to persistent radicular low back pain for 14 weeks, failure of an adequate course of conservative therapy (including six weeks of supervised physical therapy and trials of NSAIDs and neuropathic pain medication), ongoing functional limitation, and objective neurologic findings (reduced sensation in the L5 distribution and positive straight-leg raise). The MRI is medically necessary to evaluate the cause of persistent radicular symptoms and to guide timely treatment decisions. Please see the attached detailed justification and supporting documentation. We request expedited reconsideration given the clinical need to determine appropriate next steps in management.\\n\\nSincerely,\\n[ProviderName]\\n[Facility]\\n\",\n  \"detailed_justification\": \"Summary of clinical presentation and reason for imaging request:\\n- Persistent low back pain with radicular features for 14 weeks despite conservative management (completed six weeks of supervised physical therapy and medication trials), resulting in ongoing functional limitation and need for further diagnostic evaluation. (See citations: case file chart notes excerpt; NY external appeal precedent citing 6\u20138 weeks conservative management). \\n\\nObjective findings supporting need for MRI:\\n- Neurologic exam documents reduced sensation in the L5 distribution and a positive straight-leg raise, consistent with radicular pathology that warrants advanced imaging after failed conservative care to evaluate for disc herniation, foraminal stenosis, or other structural causes. (See citation: case file chart notes excerpt). \\n\\nClinical rationale linking findings to medical necessity:\\n- Current clinical course: ongoing radicular symptoms for >12 weeks with objective sensory deficit and positive provocative testing, combined with failure of an appropriate trial of conservative therapy, meets accepted criteria for lumbar MRI to identify surgically or procedurally targetable pathology and to inform treatment planning. The insurer\u2019s stated reason for denial \u2014 insufficient documentation supporting advanced imaging \u2014 is addressed by the treating provider\u2019s progress notes documenting symptom duration, failed conservative therapy, ongoing functional limitation, and focal neurological findings. (See citations: case file chart notes excerpt; NY external appeal precedent noting standard of 6\u20138 weeks conservative therapy). \\n\\nRequested action:\\n- Reverse the medical necessity denial and authorize the lumbar MRI (CPT 72148) to allow definitive evaluation and timely management of the patient\u2019s persistent radicular low back pain. \\n\\nAttachments provided/needed (see checklist).\",\n  \"evidence_checklist\": [\n    {\n      \"item\": \"Provider progress note\",\n      \"status\": \"present\",\n      \"notes\": \"Chart notes excerpt documents 14 weeks of symptoms, neurologic findings, and provider recommendation for MRI.\"\n    },\n    {\n      \"item\": \"Prior failed conservative therapy documentation\",\n      \"status\": \"present\",\n      \"notes\": \"Chart notes indicate completion of six weeks of supervised physical therapy and trials of NSAIDs and neuropathic pain medication without meaningful improvement.\"\n    },\n    {\n      \"item\": \"Relevant imaging or diagnostic report\",\n      \"status\": \"missing\",\n      \"notes\": \"No prior lumbar imaging report (e.g., X-ray or CT/MRI) was provided in the materials supplied.\"\n    },\n    {\n      \"item\": \"Detailed neurologic exam documentation\",\n      \"status\": \"present\",\n      \"notes\": \"Chart notes include reduced sensation in L5 distribution and positive straight-leg raise; full detailed exam note not attached.\"\n    },\n    {\n      \"item\": \"Dates of therapy and medication trials\",\n      \"status\": \"missing\",\n      \"notes\": \"Chart excerpt references six weeks of PT and medication trials but does not include exact start/end dates or therapy visit records.\"\n    }\n  ],\n  \"missing_information\": [\n    \"Prior lumbar imaging reports (if any) \u2014 absent from provided materials\",\n    \"Exact dates and documentation of the six weeks of supervised physical therapy (therapy visit notes or dates)\",\n    \"Specific start/end dates and dosages for NSAID and neuropathic pain medication trials\",\n    \"Full signed provider progress note(s) including provider name and signature/date\"\n  ],\n  \"citations\": [\n    {\n      \"claim\": \"Patient has chronic low back pain with radicular symptoms for 14 weeks.\",\n      \"source_id\": \"case_file\",\n      \"source_excerpt\": \"Patient has chronic low back pain with radicular symptoms for 14 weeks.\"\n    },\n    {\n      \"claim\": \"Completed six weeks of supervised physical therapy with no meaningful improvement.\",\n      \"source_id\": \"case_file\",\n      \"source_excerpt\": \"Completed six weeks of supervised physical therapy with no meaningful improvement.\"\n    },\n    {\n      \"claim\": \"Trialed NSAIDs and neuropathic pain medication with persistent functional limitation.\",\n      \"source_id\": \"case_file\",\n      \"source_excerpt\": \"Trialed NSAIDs and neuropathic pain medication with persistent functional limitation.\"\n    },\n    {\n      \"claim\": \"Neurologic exam notes reduced sensation in L5 distribution and positive straight-leg raise.\",\n      \"source_id\": \"case_file\",\n      \"source_excerpt\": \"Neurologic exam notes reduced sensation in L5 distribution and positive straight-leg raise.\"\n    },\n    {\n      \"claim\": \"Provider recommends lumbar MRI to evaluate persistent symptoms and treatment planning.\",\n      \"source_id\": \"case_file\",\n      \"source_excerpt\": \"Provider recommends lumbar MRI to evaluate persistent symptoms and treatment planning.\"\n    },\n    {\n      \"claim\": \"Established external appeal precedent notes standard of six to eight weeks of conservative management before imaging in similar contexts.\",\n      \"source_id\": \"201907-119685\",\n      \"source_excerpt\": \"The standard of care in this clinical context would be six to eight weeks of conservative management followed by re-evaluation.\"\n    },\n    {\n      \"claim\": \"Denial reason: Not medically necessary due to insufficient clinical documentation supporting advanced imaging.\",\n      \"source_id\": \"case_file\",\n      \"source_excerpt\": \"Not medically necessary due to insufficient clinical documentation supporting advanced imaging.\"\n    }\n  ]\n}"
+}
