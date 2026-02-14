@@ -216,3 +216,6 @@ data/raw
 
 # Local keys config (never commit secrets)
 src/appealpilot/config/keys.local.yaml
+
+# Microsoft Office temporary lock files
+~$*.docx
