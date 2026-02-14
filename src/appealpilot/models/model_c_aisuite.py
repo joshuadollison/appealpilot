@@ -25,6 +25,7 @@ DEFAULT_SYSTEM_PROMPT = (
 )
 
 _JSON_CODE_BLOCK = re.compile(r"^```(?:json)?\s*(.*?)\s*```$", re.DOTALL)
+DEFAULT_PASSTHROUGH_SYSTEM_PROMPT = "You are a concise assistant."
 
 
 class ModelCConfigurationError(ValueError):
@@ -212,12 +213,99 @@ def _uses_openai_gpt5_model(model: str) -> bool:
 def _build_generation_parameters(config: ModelCConfig) -> dict[str, Any]:
     if _uses_openai_gpt5_model(config.model):
         # OpenAI GPT-5 models currently only support default sampling params.
-        return {"max_completion_tokens": config.max_tokens}
+        return {
+            "max_completion_tokens": config.max_tokens,
+            "reasoning_effort": "low",
+        }
 
     return {
         "temperature": config.temperature,
         "top_p": config.top_p,
         "max_tokens": config.max_tokens,
+    }
+
+
+def _run_chat_with_retry(
+    *,
+    client: Any,
+    config: ModelCConfig,
+    messages: Sequence[Mapping[str, str]],
+) -> tuple[Any, str]:
+    params = _build_generation_parameters(config)
+    response = client.chat.completions.create(
+        model=config.model,
+        messages=list(messages),
+        **params,
+    )
+
+    try:
+        return response, _extract_text_content(response)
+    except ModelCResponseError as exc:
+        # Retry once for GPT-5 if it consumed budget on reasoning and produced no visible text.
+        if not _uses_openai_gpt5_model(config.model):
+            raise exc
+
+        retry_params = dict(params)
+        retry_tokens = int(retry_params.get("max_completion_tokens", config.max_tokens))
+        retry_params["max_completion_tokens"] = max(retry_tokens, 2400)
+        retry_params["reasoning_effort"] = "low"
+        response = client.chat.completions.create(
+            model=config.model,
+            messages=list(messages),
+            **retry_params,
+        )
+        return response, _extract_text_content(response)
+
+
+def run_model_c_passthrough(
+    prompt: str,
+    *,
+    model: str | None = None,
+    system_prompt: str = DEFAULT_PASSTHROUGH_SYSTEM_PROMPT,
+    max_tokens: int | None = None,
+    temperature: float | None = None,
+    top_p: float | None = None,
+    client: Any | None = None,
+) -> dict[str, Any]:
+    """Run a direct prompt against the selected LLM and return raw text + usage."""
+
+    prompt_text = prompt.strip()
+    if not prompt_text:
+        raise ValueError("Prompt is required.")
+
+    overrides: dict[str, Any] = {}
+    if model:
+        overrides["model"] = model
+    if max_tokens is not None:
+        overrides["max_tokens"] = int(max_tokens)
+    if temperature is not None:
+        overrides["temperature"] = float(temperature)
+    if top_p is not None:
+        overrides["top_p"] = float(top_p)
+
+    config = build_model_c_config(overrides=overrides or None)
+    active_client = client or _default_aisuite_client()
+    messages = [
+        {"role": "system", "content": (system_prompt or DEFAULT_PASSTHROUGH_SYSTEM_PROMPT).strip()},
+        {"role": "user", "content": prompt_text},
+    ]
+    response, output_text = _run_chat_with_retry(
+        client=active_client,
+        config=config,
+        messages=messages,
+    )
+
+    message = response.choices[0].message
+    return {
+        "provider": config.provider,
+        "model": config.model,
+        "usage": _usage_as_dict(response),
+        "output_text": output_text,
+        "message": {
+            "content": getattr(message, "content", None),
+            "refusal": getattr(message, "refusal", None),
+            "reasoning_content": getattr(message, "reasoning_content", None),
+        },
     }
 
 
@@ -277,16 +365,16 @@ class ModelCGenerator:
             "additional_instructions": additional_instructions or "",
         }
 
-        response = self.client.chat.completions.create(
-            model=self.config.model,
-            messages=[
-                {"role": "system", "content": self.system_prompt},
-                {"role": "user", "content": json.dumps(payload, ensure_ascii=True)},
-            ],
-            **_build_generation_parameters(self.config),
+        messages = [
+            {"role": "system", "content": self.system_prompt},
+            {"role": "user", "content": json.dumps(payload, ensure_ascii=True)},
+        ]
+        response, raw_text = _run_chat_with_retry(
+            client=self.client,
+            config=self.config,
+            messages=messages,
         )
 
-        raw_text = _extract_text_content(response)
         normalized = _strip_code_fence(raw_text)
 
         try:

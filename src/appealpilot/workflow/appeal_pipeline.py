@@ -13,6 +13,7 @@ from appealpilot.domain import AppealPacket, EvidenceItem
 from appealpilot.ingest import parse_denial_text
 from appealpilot.models import (
     ModelCGenerator,
+    ModelCResponseError,
     TemplateModelCGenerator,
     build_model_c_config,
     classify_denial_reason,
@@ -160,9 +161,9 @@ class AppealPipeline:
         }
 
         generator = self._select_generator()
-        generated = generator.generate(
-            case_summary=case_summary,
-            retrieved_evidence=[
+        generator_payload = {
+            "case_summary": case_summary,
+            "retrieved_evidence": [
                 {
                     "source_id": item.source_id,
                     "snippet": item.snippet,
@@ -171,9 +172,22 @@ class AppealPipeline:
                 }
                 for item in evidence_items
             ],
-            required_attachments=attachments,
-            additional_instructions=additional_instructions,
-        )
+            "required_attachments": attachments,
+            "additional_instructions": additional_instructions,
+        }
+        try:
+            generated = generator.generate(**generator_payload)
+        except ModelCResponseError as exc:
+            fallback_generator = TemplateModelCGenerator()
+            generated = fallback_generator.generate(**generator_payload)
+            generated["fallback_reason"] = str(exc)
+            source_config = getattr(generator, "config", None)
+            source_model = getattr(source_config, "model", "unknown")
+            source_provider = getattr(source_config, "provider", "unknown")
+            generated["fallback_from"] = {
+                "provider": source_provider,
+                "model": source_model,
+            }
 
         return AppealPacket(
             case_summary=case_summary,

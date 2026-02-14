@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import json
 import sys
 from datetime import datetime, timezone
 from pathlib import Path
@@ -15,6 +16,7 @@ if str(SRC_DIR) not in sys.path:
     sys.path.insert(0, str(SRC_DIR))
 
 from appealpilot.config.key_loader import DEFAULT_KEYS_PATH, load_local_keys
+from appealpilot.models import build_model_c_config, run_model_c_passthrough
 from appealpilot.retrieval import build_retrieval_config, rebuild_retrieval_index
 from appealpilot.workflow import run_pipeline_once
 
@@ -48,8 +50,13 @@ def _load_default_embedding_provider() -> str:
         provider = build_retrieval_config().embedding_provider.strip().lower()
     except Exception:
         provider = "sbert"
-    if provider == "local":
-        provider = "sbert"
+    aliases = {
+        "local": "sbert",
+        "sentence_transformers": "sbert",
+        "insurance": "insurance_bert",
+        "industry_bert_insurance": "insurance_bert",
+    }
+    provider = aliases.get(provider, provider)
     if provider not in EMBEDDING_PROVIDER_OPTIONS:
         return "sbert"
     return provider
@@ -199,12 +206,152 @@ def _render_generation_panel(default_provider: str) -> None:
         st.json(generated.get("citations", []))
 
         st.markdown("### Exported Files")
-        exported_files = sorted(
-            str(path.relative_to(ROOT_DIR))
-            for path in Path(export_dir).glob("*")
-            if path.is_file()
-        )
+        export_paths = sorted(path for path in Path(export_dir).glob("*") if path.is_file())
+        exported_files = [str(path.relative_to(ROOT_DIR)) for path in export_paths]
         st.code("\n".join(exported_files))
+
+        artifact_map = {path.name: path for path in export_paths}
+        letter_path = artifact_map.get("appeal_letter.md")
+        checklist_path = artifact_map.get("evidence_checklist.md")
+
+        if letter_path or checklist_path:
+            st.markdown("### Markdown Artifacts")
+            markdown_paths = [path for path in (letter_path, checklist_path) if path is not None]
+            markdown_tabs = st.tabs([path.name for path in markdown_paths])
+            for tab, path in zip(markdown_tabs, markdown_paths):
+                with tab:
+                    content = path.read_text(encoding="utf-8", errors="replace")
+                    st.markdown("#### Rendered")
+                    st.markdown(content)
+                    st.markdown("#### Raw Markdown")
+                    st.code(content, language="markdown")
+                    st.download_button(
+                        label=f"Download {path.name}",
+                        data=content,
+                        file_name=path.name,
+                        mime="text/markdown",
+                        key=f"download_md_{path.stem}",
+                    )
+
+        if export_paths:
+            st.markdown("### Artifact Explorer")
+            explorer_tabs = st.tabs([path.name for path in export_paths])
+            for tab, path in zip(explorer_tabs, export_paths):
+                with tab:
+                    content = path.read_text(encoding="utf-8", errors="replace")
+                    if path.suffix.lower() == ".json":
+                        try:
+                            st.json(json.loads(content))
+                        except json.JSONDecodeError:
+                            st.code(content, language="json")
+                    elif path.suffix.lower() == ".md":
+                        st.markdown(content)
+                    else:
+                        st.text(content)
+
+                    st.download_button(
+                        label=f"Download {path.name}",
+                        data=content,
+                        file_name=path.name,
+                        mime="text/plain",
+                        key=f"download_artifact_{path.name}",
+                    )
+
+
+def _load_default_model_c_values() -> tuple[str, int, float, float]:
+    try:
+        config = build_model_c_config()
+        return config.model, int(config.max_tokens), float(config.temperature), float(config.top_p)
+    except Exception:
+        return "openai:gpt-5-mini", 1600, 0.2, 1.0
+
+
+def _render_llm_passthrough_panel() -> None:
+    st.subheader("LLM Pass-Through Test")
+    st.caption("Send a direct prompt to your selected model and inspect the raw response.")
+
+    default_model, default_max_tokens, default_temperature, default_top_p = (
+        _load_default_model_c_values()
+    )
+
+    col1, col2 = st.columns(2)
+    with col1:
+        model = st.text_input("LLM model (provider:model)", value=default_model)
+    with col2:
+        max_tokens = st.number_input(
+            "Max completion tokens",
+            min_value=1,
+            value=default_max_tokens,
+            step=100,
+        )
+
+    col3, col4 = st.columns(2)
+    with col3:
+        temperature = st.number_input(
+            "Temperature (non-GPT-5 models)",
+            min_value=0.0,
+            max_value=2.0,
+            value=default_temperature,
+            step=0.1,
+            format="%.2f",
+        )
+    with col4:
+        top_p = st.number_input(
+            "Top P (non-GPT-5 models)",
+            min_value=0.0,
+            max_value=1.0,
+            value=default_top_p,
+            step=0.1,
+            format="%.2f",
+        )
+
+    system_prompt = st.text_area(
+        "System prompt",
+        value="You are a concise assistant.",
+        height=90,
+    )
+    prompt = st.text_area(
+        "Prompt",
+        value="",
+        height=160,
+        placeholder="Type a simple prompt here and click Run LLM Prompt...",
+    )
+
+    if st.button("Run LLM Prompt"):
+        if not prompt.strip():
+            st.warning("Prompt is required.")
+            return
+
+        with st.spinner("Calling model..."):
+            try:
+                result = run_model_c_passthrough(
+                    prompt=prompt,
+                    model=model.strip() or None,
+                    system_prompt=system_prompt,
+                    max_tokens=int(max_tokens),
+                    temperature=float(temperature),
+                    top_p=float(top_p),
+                )
+            except Exception as exc:
+                st.error(f"LLM pass-through failed: {exc}")
+                return
+
+        st.success("LLM response received.")
+        st.text_area(
+            "Response",
+            value=result.get("output_text", ""),
+            height=220,
+        )
+        st.markdown("#### Metadata")
+        st.json(
+            {
+                "provider": result.get("provider"),
+                "model": result.get("model"),
+                "usage": result.get("usage", {}),
+            }
+        )
+        st.markdown("#### Raw Message")
+        st.json(result.get("message", {}))
 
 
 def main() -> None:
@@ -219,6 +366,8 @@ def main() -> None:
     _render_rebuild_panel(default_provider=default_provider)
     st.divider()
     _render_generation_panel(default_provider=default_provider)
+    st.divider()
+    _render_llm_passthrough_panel()
 
 
 if __name__ == "__main__":

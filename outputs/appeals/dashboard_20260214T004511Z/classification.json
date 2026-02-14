@@ -1,0 +1,7 @@
+{
+  "category": "medical_necessity",
+  "confidence": 0.55,
+  "matched_terms": [
+    "not medically necessary"
+  ]
+}

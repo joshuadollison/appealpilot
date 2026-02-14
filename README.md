@@ -91,6 +91,7 @@ Then open:
 Dashboard features:
 - Rebuild vector store (button) with provider/limit/reset controls.
 - Run full denial-to-appeal workflow interactively.
+- Run an LLM pass-through prompt test with selected model/runtime settings.
 - Inspect classification, retrieved evidence, generated output, and exported file paths.
 
 ## Retrieval Embedding Providers
