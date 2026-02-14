@@ -54,7 +54,7 @@ Options:
 - `--xlsx-path <path>`: alternate DFS source file.
 - `--limit <n>`: max rows ingested.
 - `--reset`: drop and recreate collection before ingest.
-- `--embedding-provider {openai,hash,sbert,local}`: choose embedding backend.
+- `--embedding-provider {openai,hash,sbert,insurance_bert,local}`: choose embedding backend.
 - `--collection-name <name>`: override collection.
 
 ### B. Query Retrieval Index
@@ -152,6 +152,10 @@ Key retrieval fields:
 For local semantic embeddings, set:
 - `retrieval.embedding_provider: sbert`
 - `retrieval.embedding_model: sbert:sentence-transformers/all-MiniLM-L6-v2`
+
+Insurance-domain local demo preset:
+- `retrieval.embedding_provider: insurance_bert`
+- `retrieval.embedding_model: insurance_bert:llmware/industry-bert-insurance-v0.1`
 
 Key generation fields:
 - `model_c.model`

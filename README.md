@@ -40,6 +40,12 @@ Local semantic option (recommended local quality/speed tradeoff):
 PYTHONPATH=src python src/scripts/build_retrieval_index.py --embedding-provider sbert --reset --limit 2000
 ```
 
+Insurance-domain demo option (local):
+
+```bash
+PYTHONPATH=src python src/scripts/build_retrieval_index.py --embedding-provider insurance_bert --reset --limit 2000
+```
+
 Query retrieval index:
 
 ```bash
@@ -91,6 +97,7 @@ Dashboard features:
 
 - `hash`: lightweight deterministic baseline, fully offline.
 - `sbert` / `local`: local semantic embeddings via `sentence-transformers` (default model: `sentence-transformers/all-MiniLM-L6-v2`).
+- `insurance_bert`: local insurance-domain embedding preset (`llmware/industry-bert-insurance-v0.1`).
 - `openai`: cloud embeddings via `text-embedding-3-small`.
 
 OpenAI upserts are automatically token-batched to avoid request token limits during large index rebuilds.

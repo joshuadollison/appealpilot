@@ -20,7 +20,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--limit", type=int)
     parser.add_argument("--reset", action="store_true")
     parser.add_argument("--settings-path", type=Path)
-    parser.add_argument("--embedding-provider", choices=["openai", "hash", "sbert", "local"])
+    parser.add_argument(
+        "--embedding-provider",
+        choices=["openai", "hash", "sbert", "insurance_bert", "local"],
+    )
     parser.add_argument("--collection-name")
     return parser.parse_args()
 

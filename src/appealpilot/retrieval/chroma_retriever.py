@@ -3,11 +3,14 @@
 from __future__ import annotations
 
 import hashlib
+import logging
 import math
 import os
 import re
+import warnings
 from dataclasses import dataclass, field
 from pathlib import Path
+from threading import Lock
 from typing import Any, Iterable, Mapping, Sequence
 
 DEFAULT_SETTINGS_PATH = Path(__file__).resolve().parents[1] / "config" / "settings.yaml"
@@ -16,6 +19,10 @@ CHARS_PER_TOKEN_ESTIMATE = 3
 DEFAULT_OPENAI_MAX_BATCH_TOKENS = 200_000
 DEFAULT_OPENAI_MAX_INPUT_TOKENS = 8_000
 DEFAULT_UPSERT_BATCH_SIZE = 128
+DEFAULT_SBERT_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+DEFAULT_INSURANCE_BERT_MODEL = "llmware/industry-bert-insurance-v0.1"
+_SBERT_MODEL_CACHE: dict[str, Any] = {}
+_SBERT_MODEL_CACHE_LOCK = Lock()
 
 
 class RetrievalConfigError(ValueError):
@@ -169,15 +176,24 @@ def _normalize_embedding_provider(provider: str) -> str:
         "sbert": "sbert",
         "sentence_transformers": "sbert",
         "local": "sbert",
+        "insurance_bert": "insurance_bert",
+        "industry_bert_insurance": "insurance_bert",
+        "insurance": "insurance_bert",
     }
     return aliases.get(normalized, normalized)
 
 
 def _resolve_embedding_model_name(
     raw_model: str,
-    expected_provider: str,
+    expected_providers: str | Sequence[str],
     default_model: str,
 ) -> str:
+    providers: set[str]
+    if isinstance(expected_providers, str):
+        providers = {_normalize_embedding_provider(expected_providers)}
+    else:
+        providers = {_normalize_embedding_provider(item) for item in expected_providers}
+
     model = (raw_model or "").strip()
     if not model:
         return default_model
@@ -186,7 +202,7 @@ def _resolve_embedding_model_name(
         return model
 
     provider_prefix, model_name = model.split(":", maxsplit=1)
-    if _normalize_embedding_provider(provider_prefix) == expected_provider:
+    if _normalize_embedding_provider(provider_prefix) in providers:
         candidate = model_name.strip()
         if candidate:
             return candidate
@@ -255,16 +271,42 @@ class SentenceTransformerEmbeddingFunction:
     """Local semantic embeddings via sentence-transformers."""
 
     def __init__(self, model_name: str = "sentence-transformers/all-MiniLM-L6-v2"):
-        try:
-            from sentence_transformers import SentenceTransformer
-        except ImportError as exc:
-            raise RetrievalConfigError(
-                "sentence-transformers is required for local embeddings. "
-                "Install with `pip install sentence-transformers`."
-            ) from exc
-
         self.model_name = model_name
-        self._model = SentenceTransformer(model_name)
+        self._model = self._load_model(model_name)
+
+    @staticmethod
+    def _load_model(model_name: str) -> Any:
+        cached = _SBERT_MODEL_CACHE.get(model_name)
+        if cached is not None:
+            return cached
+
+        with _SBERT_MODEL_CACHE_LOCK:
+            cached = _SBERT_MODEL_CACHE.get(model_name)
+            if cached is not None:
+                return cached
+
+            try:
+                from sentence_transformers import SentenceTransformer
+                from transformers.utils import logging as transformers_logging
+            except ImportError as exc:
+                raise RetrievalConfigError(
+                    "sentence-transformers is required for local embeddings. "
+                    "Install with `pip install sentence-transformers`."
+                ) from exc
+
+            os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")
+            logging.getLogger("huggingface_hub").setLevel(logging.ERROR)
+            logging.getLogger("sentence_transformers").setLevel(logging.ERROR)
+            logging.getLogger("transformers").setLevel(logging.ERROR)
+            transformers_logging.set_verbosity_error()
+            warnings.filterwarnings(
+                "ignore",
+                message="You are sending unauthenticated requests to the HF Hub.*",
+            )
+
+            model = SentenceTransformer(model_name)
+            _SBERT_MODEL_CACHE[model_name] = model
+            return model
 
     @staticmethod
     def name() -> str:
@@ -303,9 +345,9 @@ def resolve_embedding_provider(config: RetrievalConfig) -> str:
     """Resolve embedding provider with sensible runtime fallback."""
 
     provider = _normalize_embedding_provider(config.embedding_provider)
-    if provider not in {"openai", "hash", "sbert"}:
+    if provider not in {"openai", "hash", "sbert", "insurance_bert"}:
         raise RetrievalConfigError(
-            "embedding_provider must be one of: openai, hash, sbert (or local)."
+            "embedding_provider must be one of: openai, hash, sbert, insurance_bert (or local)."
         )
 
     if provider == "openai" and not os.getenv("OPENAI_API_KEY"):
@@ -320,8 +362,15 @@ def _build_embedding_function(config: RetrievalConfig) -> tuple[Any, str]:
     if provider == "sbert":
         model_name = _resolve_embedding_model_name(
             raw_model=config.embedding_model,
-            expected_provider="sbert",
-            default_model="sentence-transformers/all-MiniLM-L6-v2",
+            expected_providers=["sbert", "insurance_bert"],
+            default_model=DEFAULT_SBERT_MODEL,
+        )
+        return SentenceTransformerEmbeddingFunction(model_name=model_name), provider
+    if provider == "insurance_bert":
+        model_name = _resolve_embedding_model_name(
+            raw_model=config.embedding_model,
+            expected_providers=["insurance_bert"],
+            default_model=DEFAULT_INSURANCE_BERT_MODEL,
         )
         return SentenceTransformerEmbeddingFunction(model_name=model_name), provider
 
@@ -337,7 +386,7 @@ def _build_embedding_function(config: RetrievalConfig) -> tuple[Any, str]:
             api_key=os.environ["OPENAI_API_KEY"],
             model_name=_resolve_embedding_model_name(
                 raw_model=config.embedding_model,
-                expected_provider="openai",
+                expected_providers="openai",
                 default_model="text-embedding-3-small",
             ),
         ),

@@ -13,6 +13,9 @@ retrieval:
   embedding_provider: sbert
   embedding_model: sbert:sentence-transformers/all-MiniLM-L6-v2
   # Other embedding options:
+  # - Insurance BERT demo option (local, domain-tuned):
+  #   embedding_provider: insurance_bert
+  #   embedding_model: insurance_bert:llmware/industry-bert-insurance-v0.1
   # - OpenAI (cloud):
   #   embedding_provider: openai
   #   embedding_model: openai:text-embedding-3-small

@@ -3,7 +3,9 @@ from __future__ import annotations
 from appealpilot.retrieval.chroma_retriever import (
     CHARS_PER_TOKEN_ESTIMATE,
     ChromaRetriever,
+    DEFAULT_INSURANCE_BERT_MODEL,
     RetrievalConfig,
+    _resolve_embedding_model_name,
     resolve_embedding_provider,
 )
 
@@ -31,10 +33,24 @@ def test_local_alias_maps_to_sbert() -> None:
     assert resolve_embedding_provider(config) == "sbert"
 
 
+def test_insurance_alias_maps_to_insurance_bert() -> None:
+    config = RetrievalConfig(embedding_provider="insurance")
+    assert resolve_embedding_provider(config) == "insurance_bert"
+
+
 def test_openai_without_key_falls_back_to_hash(monkeypatch) -> None:
     monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     config = RetrievalConfig(embedding_provider="openai")
     assert resolve_embedding_provider(config) == "hash"
+
+
+def test_insurance_provider_uses_insurance_default_over_sbert_prefixed_model() -> None:
+    resolved = _resolve_embedding_model_name(
+        raw_model="sbert:sentence-transformers/all-MiniLM-L6-v2",
+        expected_providers=["insurance_bert"],
+        default_model=DEFAULT_INSURANCE_BERT_MODEL,
+    )
+    assert resolved == DEFAULT_INSURANCE_BERT_MODEL
 
 
 def test_openai_text_is_truncated_before_embedding_request() -> None:
@@ -62,4 +78,3 @@ def test_openai_batches_respect_token_budget() -> None:
     assert len(batches) == 2
     assert batches[0][0] == ["a", "b"]
     assert batches[1][0] == ["c"]
-

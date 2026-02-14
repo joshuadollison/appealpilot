@@ -147,19 +147,47 @@ def _strip_code_fence(text: str) -> str:
     return text.strip()
 
 
+def _coerce_text_payload(value: Any) -> str:
+    if value is None:
+        return ""
+    if isinstance(value, str):
+        return value.strip()
+    if isinstance(value, Mapping):
+        for key in ("text", "content", "value", "output_text", "refusal"):
+            if key in value:
+                candidate = _coerce_text_payload(value.get(key))
+                if candidate:
+                    return candidate
+        return ""
+    if isinstance(value, Sequence) and not isinstance(value, (str, bytes, bytearray)):
+        parts = [_coerce_text_payload(item) for item in value]
+        joined = "\n".join(part for part in parts if part)
+        return joined.strip()
+
+    for attr in ("text", "content", "value", "output_text", "refusal"):
+        if hasattr(value, attr):
+            candidate = _coerce_text_payload(getattr(value, attr))
+            if candidate:
+                return candidate
+    return ""
+
+
 def _extract_text_content(response: Any) -> str:
     try:
-        content = response.choices[0].message.content
+        message = response.choices[0].message
     except Exception as exc:
         raise ModelCResponseError("Could not read content from model response.") from exc
 
-    if isinstance(content, str):
-        trimmed = content.strip()
-        if trimmed:
-            return trimmed
-        raise ModelCResponseError("Model returned empty content.")
+    content = _coerce_text_payload(getattr(message, "content", None))
+    if content:
+        return content
 
-    raise ModelCResponseError("Model returned unsupported non-text content.")
+    # Some providers expose fallback fields when content is empty.
+    fallback = _coerce_text_payload(message)
+    if fallback:
+        return fallback
+
+    raise ModelCResponseError("Model returned empty content.")
 
 
 def _usage_as_dict(response: Any) -> dict[str, Any]:
@@ -171,6 +199,25 @@ def _usage_as_dict(response: Any) -> dict[str, Any]:
         "prompt_tokens": getattr(usage, "prompt_tokens", None),
         "completion_tokens": getattr(usage, "completion_tokens", None),
         "total_tokens": getattr(usage, "total_tokens", None),
+    }
+
+
+def _uses_openai_gpt5_model(model: str) -> bool:
+    if ":" not in model:
+        return False
+    provider, model_name = model.split(":", maxsplit=1)
+    return provider.strip().lower() == "openai" and model_name.strip().lower().startswith("gpt-5")
+
+
+def _build_generation_parameters(config: ModelCConfig) -> dict[str, Any]:
+    if _uses_openai_gpt5_model(config.model):
+        # OpenAI GPT-5 models currently only support default sampling params.
+        return {"max_completion_tokens": config.max_tokens}
+
+    return {
+        "temperature": config.temperature,
+        "top_p": config.top_p,
+        "max_tokens": config.max_tokens,
     }
 
 
@@ -236,9 +283,7 @@ class ModelCGenerator:
                 {"role": "system", "content": self.system_prompt},
                 {"role": "user", "content": json.dumps(payload, ensure_ascii=True)},
             ],
-            temperature=self.config.temperature,
-            max_tokens=self.config.max_tokens,
-            top_p=self.config.top_p,
+            **_build_generation_parameters(self.config),
         )
 
         raw_text = _extract_text_content(response)
