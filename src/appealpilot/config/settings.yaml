@@ -10,9 +10,19 @@ retrieval:
   vector_store: chroma
   persist_directory: data/interim/chroma
   collection_name: dfs_appeals_cases
-  embedding_model: openai:text-embedding-3-small
-  embedding_provider: openai
+  embedding_provider: sbert
+  embedding_model: sbert:sentence-transformers/all-MiniLM-L6-v2
+  # Other embedding options:
+  # - OpenAI (cloud):
+  #   embedding_provider: openai
+  #   embedding_model: openai:text-embedding-3-small
+  # - Hash baseline (fully local lexical baseline):
+  #   embedding_provider: hash
+  #   embedding_model: hash
   hash_dimensions: 256
+  upsert_batch_size: 128
+  openai_max_batch_tokens: 200000
+  openai_max_input_tokens: 8000
   top_k: 5
 
 model_c:

@@ -50,7 +50,7 @@ def _render_rebuild_panel() -> None:
     with col1:
         rebuild_limit = st.number_input("Rebuild row limit", min_value=1, value=2000, step=100)
     with col2:
-        rebuild_provider = st.selectbox("Embedding provider", ["hash", "openai"], index=0)
+        rebuild_provider = st.selectbox("Embedding provider", ["hash", "sbert", "openai"], index=0)
     with col3:
         reset_collection = st.checkbox("Reset collection first", value=True)
 
@@ -97,7 +97,7 @@ def _render_generation_panel() -> None:
     with col2:
         generation_runtime = st.selectbox("Generation runtime", ["auto", "template", "aisuite"], index=0)
     with col3:
-        query_provider = st.selectbox("Retrieval provider", ["hash", "openai"], index=0)
+        query_provider = st.selectbox("Retrieval provider", ["hash", "sbert", "openai"], index=0)
 
     collection_name = st.text_input("Retrieval collection", value="dfs_appeals_cases")
     output_dir = st.text_input("Output directory", value="")

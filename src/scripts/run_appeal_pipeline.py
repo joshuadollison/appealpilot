@@ -29,7 +29,7 @@ def main() -> None:
     parser.add_argument("--generation-runtime", choices=["auto", "aisuite", "template"], default="auto")
     parser.add_argument("--output-dir", type=Path)
     parser.add_argument("--collection-name")
-    parser.add_argument("--embedding-provider", choices=["openai", "hash"])
+    parser.add_argument("--embedding-provider", choices=["openai", "hash", "sbert", "local"])
     args = parser.parse_args()
 
     denial_text = _read_text_arg(args.denial_text_file, args.denial_text)

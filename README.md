@@ -34,6 +34,12 @@ Build retrieval index (Model B):
 PYTHONPATH=src python src/scripts/build_retrieval_index.py --embedding-provider hash --reset --limit 2000
 ```
 
+Local semantic option (recommended local quality/speed tradeoff):
+
+```bash
+PYTHONPATH=src python src/scripts/build_retrieval_index.py --embedding-provider sbert --reset --limit 2000
+```
+
 Query retrieval index:
 
 ```bash
@@ -80,6 +86,15 @@ Dashboard features:
 - Rebuild vector store (button) with provider/limit/reset controls.
 - Run full denial-to-appeal workflow interactively.
 - Inspect classification, retrieved evidence, generated output, and exported file paths.
+
+## Retrieval Embedding Providers
+
+- `hash`: lightweight deterministic baseline, fully offline.
+- `sbert` / `local`: local semantic embeddings via `sentence-transformers` (default model: `sentence-transformers/all-MiniLM-L6-v2`).
+- `openai`: cloud embeddings via `text-embedding-3-small`.
+
+OpenAI upserts are automatically token-batched to avoid request token limits during large index rebuilds.
+To set a specific local model, set `retrieval.embedding_model` to `sbert:<model_name>`.
 
 ## LLM Generation (Model C via aisuite)
 

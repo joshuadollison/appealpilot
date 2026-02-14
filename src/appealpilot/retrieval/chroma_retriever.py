@@ -12,6 +12,10 @@ from typing import Any, Iterable, Mapping, Sequence
 
 DEFAULT_SETTINGS_PATH = Path(__file__).resolve().parents[1] / "config" / "settings.yaml"
 TOKEN_PATTERN = re.compile(r"[a-zA-Z0-9_]+")
+CHARS_PER_TOKEN_ESTIMATE = 3
+DEFAULT_OPENAI_MAX_BATCH_TOKENS = 200_000
+DEFAULT_OPENAI_MAX_INPUT_TOKENS = 8_000
+DEFAULT_UPSERT_BATCH_SIZE = 128
 
 
 class RetrievalConfigError(ValueError):
@@ -29,6 +33,9 @@ class RetrievalConfig:
     embedding_provider: str = "openai"
     top_k: int = 5
     hash_dimensions: int = 256
+    openai_max_batch_tokens: int = DEFAULT_OPENAI_MAX_BATCH_TOKENS
+    openai_max_input_tokens: int = DEFAULT_OPENAI_MAX_INPUT_TOKENS
+    upsert_batch_size: int = DEFAULT_UPSERT_BATCH_SIZE
 
     def validate(self) -> None:
         if self.vector_store != "chroma":
@@ -41,6 +48,16 @@ class RetrievalConfig:
             raise RetrievalConfigError("top_k must be >= 1.")
         if self.hash_dimensions < 32:
             raise RetrievalConfigError("hash_dimensions must be >= 32.")
+        if self.openai_max_batch_tokens < 1:
+            raise RetrievalConfigError("openai_max_batch_tokens must be >= 1.")
+        if self.openai_max_input_tokens < 1:
+            raise RetrievalConfigError("openai_max_input_tokens must be >= 1.")
+        if self.upsert_batch_size < 1:
+            raise RetrievalConfigError("upsert_batch_size must be >= 1.")
+        if self.openai_max_batch_tokens < self.openai_max_input_tokens:
+            raise RetrievalConfigError(
+                "openai_max_batch_tokens must be >= openai_max_input_tokens."
+            )
 
 
 @dataclass(frozen=True)
@@ -121,9 +138,59 @@ def build_retrieval_config(
         hash_dimensions=_to_int(
             os.getenv("RETRIEVAL_HASH_DIMENSIONS", base.get("hash_dimensions")), 256
         ),
+        openai_max_batch_tokens=_to_int(
+            os.getenv(
+                "RETRIEVAL_OPENAI_MAX_BATCH_TOKENS",
+                base.get("openai_max_batch_tokens"),
+            ),
+            DEFAULT_OPENAI_MAX_BATCH_TOKENS,
+        ),
+        openai_max_input_tokens=_to_int(
+            os.getenv(
+                "RETRIEVAL_OPENAI_MAX_INPUT_TOKENS",
+                base.get("openai_max_input_tokens"),
+            ),
+            DEFAULT_OPENAI_MAX_INPUT_TOKENS,
+        ),
+        upsert_batch_size=_to_int(
+            os.getenv("RETRIEVAL_UPSERT_BATCH_SIZE", base.get("upsert_batch_size")),
+            DEFAULT_UPSERT_BATCH_SIZE,
+        ),
     )
     config.validate()
     return config
+
+
+def _normalize_embedding_provider(provider: str) -> str:
+    normalized = provider.strip().lower().replace("-", "_")
+    aliases = {
+        "openai": "openai",
+        "hash": "hash",
+        "sbert": "sbert",
+        "sentence_transformers": "sbert",
+        "local": "sbert",
+    }
+    return aliases.get(normalized, normalized)
+
+
+def _resolve_embedding_model_name(
+    raw_model: str,
+    expected_provider: str,
+    default_model: str,
+) -> str:
+    model = (raw_model or "").strip()
+    if not model:
+        return default_model
+
+    if ":" not in model:
+        return model
+
+    provider_prefix, model_name = model.split(":", maxsplit=1)
+    if _normalize_embedding_provider(provider_prefix) == expected_provider:
+        candidate = model_name.strip()
+        if candidate:
+            return candidate
+    return default_model
 
 
 class HashEmbeddingFunction:
@@ -184,13 +251,61 @@ class HashEmbeddingFunction:
         return [value / norm for value in vector]
 
 
+class SentenceTransformerEmbeddingFunction:
+    """Local semantic embeddings via sentence-transformers."""
+
+    def __init__(self, model_name: str = "sentence-transformers/all-MiniLM-L6-v2"):
+        try:
+            from sentence_transformers import SentenceTransformer
+        except ImportError as exc:
+            raise RetrievalConfigError(
+                "sentence-transformers is required for local embeddings. "
+                "Install with `pip install sentence-transformers`."
+            ) from exc
+
+        self.model_name = model_name
+        self._model = SentenceTransformer(model_name)
+
+    @staticmethod
+    def name() -> str:
+        return "sentence_transformers_embedding_v1"
+
+    def is_legacy(self) -> bool:
+        return False
+
+    def supported_spaces(self) -> list[str]:
+        return ["cosine", "l2", "ip"]
+
+    def get_config(self) -> dict[str, Any]:
+        return {"type": "sentence_transformers", "model_name": self.model_name}
+
+    def __call__(self, input: Sequence[str]) -> list[list[float]]:
+        if not input:
+            return []
+        vectors = self._model.encode(
+            list(input),
+            show_progress_bar=False,
+            convert_to_numpy=True,
+            normalize_embeddings=True,
+        )
+        return vectors.tolist()
+
+    def embed_documents(self, input: Sequence[str]) -> list[list[float]]:
+        return self(input)
+
+    def embed_query(self, input: str | Sequence[str]) -> list[list[float]]:
+        if isinstance(input, str):
+            return self([input])
+        return self(input)
+
+
 def resolve_embedding_provider(config: RetrievalConfig) -> str:
     """Resolve embedding provider with sensible runtime fallback."""
 
-    provider = config.embedding_provider.strip().lower()
-    if provider not in {"openai", "hash"}:
+    provider = _normalize_embedding_provider(config.embedding_provider)
+    if provider not in {"openai", "hash", "sbert"}:
         raise RetrievalConfigError(
-            "embedding_provider must be one of: openai, hash."
+            "embedding_provider must be one of: openai, hash, sbert (or local)."
         )
 
     if provider == "openai" and not os.getenv("OPENAI_API_KEY"):
@@ -202,6 +317,13 @@ def _build_embedding_function(config: RetrievalConfig) -> tuple[Any, str]:
     provider = resolve_embedding_provider(config)
     if provider == "hash":
         return HashEmbeddingFunction(dimensions=config.hash_dimensions), provider
+    if provider == "sbert":
+        model_name = _resolve_embedding_model_name(
+            raw_model=config.embedding_model,
+            expected_provider="sbert",
+            default_model="sentence-transformers/all-MiniLM-L6-v2",
+        )
+        return SentenceTransformerEmbeddingFunction(model_name=model_name), provider
 
     try:
         from chromadb.utils.embedding_functions import OpenAIEmbeddingFunction
@@ -213,7 +335,11 @@ def _build_embedding_function(config: RetrievalConfig) -> tuple[Any, str]:
     return (
         OpenAIEmbeddingFunction(
             api_key=os.environ["OPENAI_API_KEY"],
-            model_name=config.embedding_model.split(":", maxsplit=1)[-1],
+            model_name=_resolve_embedding_model_name(
+                raw_model=config.embedding_model,
+                expected_provider="openai",
+                default_model="text-embedding-3-small",
+            ),
         ),
         provider,
     )
@@ -286,6 +412,61 @@ class ChromaRetriever:
 
         return RetrievalDocument(doc_id=doc_id, text=text, metadata=dict(metadata))
 
+    def _estimate_tokens(self, text: str) -> int:
+        cleaned = text.strip()
+        if not cleaned:
+            return 1
+        return max(1, math.ceil(len(cleaned) / CHARS_PER_TOKEN_ESTIMATE))
+
+    def _normalize_text_for_upsert(self, text: str) -> str:
+        if self.embedding_provider != "openai":
+            return text
+
+        max_chars = self.config.openai_max_input_tokens * CHARS_PER_TOKEN_ESTIMATE
+        if len(text) <= max_chars:
+            return text
+        return text[:max_chars]
+
+    def _iter_upsert_batches(
+        self,
+        ids: list[str],
+        texts: list[str],
+        metadatas: list[dict[str, Any]],
+    ) -> Iterable[tuple[list[str], list[str], list[dict[str, Any]]]]:
+        max_batch_size = max(1, self.config.upsert_batch_size)
+        if self.embedding_provider != "openai":
+            for start in range(0, len(ids), max_batch_size):
+                end = start + max_batch_size
+                yield ids[start:end], texts[start:end], metadatas[start:end]
+            return
+
+        max_batch_tokens = max(1, self.config.openai_max_batch_tokens)
+        batch_ids: list[str] = []
+        batch_texts: list[str] = []
+        batch_metadatas: list[dict[str, Any]] = []
+        batch_tokens = 0
+
+        for doc_id, text, metadata in zip(ids, texts, metadatas):
+            estimated_tokens = self._estimate_tokens(text)
+            should_flush = bool(batch_ids) and (
+                len(batch_ids) >= max_batch_size
+                or (batch_tokens + estimated_tokens) > max_batch_tokens
+            )
+            if should_flush:
+                yield batch_ids, batch_texts, batch_metadatas
+                batch_ids = []
+                batch_texts = []
+                batch_metadatas = []
+                batch_tokens = 0
+
+            batch_ids.append(doc_id)
+            batch_texts.append(text)
+            batch_metadatas.append(metadata)
+            batch_tokens += estimated_tokens
+
+        if batch_ids:
+            yield batch_ids, batch_texts, batch_metadatas
+
     def upsert_documents(
         self, documents: Iterable[RetrievalDocument | Mapping[str, Any]]
     ) -> int:
@@ -298,13 +479,22 @@ class ChromaRetriever:
         for raw_document in documents:
             document = self._coerce_document(raw_document)
             ids.append(document.doc_id)
-            texts.append(document.text)
+            texts.append(self._normalize_text_for_upsert(document.text))
             metadatas.append(dict(document.metadata))
 
         if not ids:
             return 0
 
-        self.collection.upsert(ids=ids, documents=texts, metadatas=metadatas)
+        for batch_ids, batch_texts, batch_metadatas in self._iter_upsert_batches(
+            ids=ids,
+            texts=texts,
+            metadatas=metadatas,
+        ):
+            self.collection.upsert(
+                ids=batch_ids,
+                documents=batch_texts,
+                metadatas=batch_metadatas,
+            )
         return len(ids)
 
     def query(

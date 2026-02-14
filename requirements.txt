@@ -1,6 +1,7 @@
 aisuite[openai,groq]>=0.1.14
 PyYAML>=6.0.2
 chromadb>=0.5.0
+sentence-transformers>=3.0.1
 openpyxl>=3.1.5
 fastapi>=0.116.0
 uvicorn>=0.34.0
